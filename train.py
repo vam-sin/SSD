@@ -42,7 +42,7 @@ def main():
     parser.add_argument("--num-classes", type=int, default=2)
 
     # training
-    parser.add_argument("--dataset", type=str, default="rb_patches")
+    parser.add_argument("--dataset", type=str, default="bg_patches")
     parser.add_argument("--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/")
     parser.add_argument("--normalize", action="store_true", default=False)
     parser.add_argument("--batch-size", type=int, default=512)

@@ -120,7 +120,7 @@ def main():
     parser.add_argument("--k", type=int, default=1)
     parser.add_argument("--copies", type=int, default=10)
 
-    parser.add_argument("--dataset", type=str, default="rb_patches")
+    parser.add_argument("--dataset", type=str, default="bg_patches")
     parser.add_argument("--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/")
     parser.add_argument(
         "--data-mode", type=str, choices=("org", "base", "ssl"), default="base"
@@ -187,7 +187,11 @@ def main():
     np.savez_compressed('embeds/features_test.npz', features_test_np)
     print("In-distribution features shape: ", features_train.shape, features_test.shape)
 
-    ds = ["rb_patches", "only_rb_patches"]
+    ds = ["bg_patches", "only_rb_patches"]
+    '''
+    bg_patches is In distribution and 
+    ribosome patches from "only_rb_pacthes" is treated as OOD
+    '''
     ds.remove(args.dataset)
 
     for d in ds:

@@ -113,7 +113,7 @@ def main():
     parser.add_argument("--classes", type=int, default=2)
     parser.add_argument("--clusters", type=int, default=1)
 
-    parser.add_argument("--dataset", type=str, default="rb_patches")
+    parser.add_argument("--dataset", type=str, default="bg_patches")
     parser.add_argument(
         "--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/"
     )
@@ -179,7 +179,11 @@ def main():
     features_test, _ = get_features(model.encoder, test_loader)
     print("In-distribution features shape: ", features_train.shape, features_test.shape)
 
-    ds = ["only_rb_patches", "rb_patches"]
+    ds = ["only_rb_patches", "bg_patches"]
+    '''
+    bg_patches is In distribution and 
+    ribosome patches from "only_rb_pacthes" is treated as OOD
+    '''
     ds.remove(args.dataset)
 
     for d in ds:

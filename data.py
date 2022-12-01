@@ -16,75 +16,14 @@ class TwoCropTransform:
     def __call__(self, x):
         return [self.transform(x), self.transform(x)]
 
-# def rb_patches(
-#     data_dir, batch_size=32, mode="base", normalize=True, norm_layer=None, size=32
-# ):
-#     """
-#     mode: org | base | ssl
-#     """
-#     transform_train = [
-#         transforms.Resize(size),
-#         transforms.RandomCrop(size, padding=4),
-#         transforms.RandomHorizontalFlip(),
-#         transforms.ToTensor(),
-#     ]
-#     transform_test = [transforms.Resize(size), transforms.ToTensor()]
-
-#     if mode == "org":
-#         None
-#     elif mode == "base":
-#         transform_train = [transforms.Resize(size), transforms.ToTensor()]
-#     elif mode == "ssl":
-#         transform_train = [
-#             transforms.RandomResizedCrop(size, scale=(0.2, 1.0)),
-#             transforms.RandomHorizontalFlip(),
-#             transforms.RandomApply([transforms.ColorJitter(0.4, 0.4, 0.4, 0.1)], p=0.8),
-#             transforms.RandomGrayscale(p=0.2),
-#             transforms.ToTensor(),
-#         ]
-#     else:
-#         raise ValueError(f"{mode} mode not supported")
-
-#     if norm_layer is None:
-#         norm_layer = transforms.Normalize(
-#             mean=[0.491, 0.482, 0.447], std=[0.202, 0.199, 0.201]
-#         )
-
-#     # grayscale transform
-#     gs_ts = transforms.Grayscale()
-#     transform_train.append(gs_ts)
-#     transform_test.append(gs_ts)
-
-#     # add extra channel
-#     channelAdd_ts = transforms.Lambda(lambda x: x.repeat(1, 1, 1))
-#     transform_train.append(channelAdd_ts)
-#     transform_test.append(channelAdd_ts)
-    
-#     if normalize:
-#         transform_train.append(norm_layer)
-#         transform_test.append(norm_layer)
-
-#     transform_train = transforms.Compose(transform_train)
-#     transform_test = transforms.Compose(transform_test)
-
-#     if mode == "ssl":
-#         transform_train = TwoCropTransform(transform_train)
-    
-#     total_dataset = datasets.ImageFolder(data_dir)
-#     trainset, testset = torch.utils.data.random_split(total_dataset, [int(0.8 * len(total_dataset)), len(total_dataset) - int(0.8 * len(total_dataset))])
-#     trainset.dataset.transform = transform_train
-#     testset.dataset.transform = transform_test
-#     train_loader = DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
-#     test_loader = DataLoader(testset, batch_size=batch_size, shuffle=False, num_workers=4, pin_memory=True)
-
-#     return train_loader, test_loader, norm_layer
-
-def rb_patches(
+def bg_patches(
     data_dir, batch_size=32, mode="base", normalize=True, norm_layer=None, size=32
 ):
     """
     mode: org | base | ssl
     bg images only
+    this function loads in 32x32 image patches from the set of background images
+    and microtubule dataset
     """
     transform_train = [
         transforms.Resize(size),
@@ -155,6 +94,8 @@ def only_rb_patches(
 ):
     """
     mode: org | base | ssl
+    this function loads in the 32x32 patches obtained from the microtubule dataset
+    that contain a ribosome spot
     """
     transform_train = [
         transforms.Resize(size),
