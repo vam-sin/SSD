@@ -30,20 +30,20 @@ def main():
     parser.add_argument(
         "--results-dir",
         type=str,
-        default="/data/data_vvikash/fall20/SSD/trained_models/",
+        default="/nfs_home/nallapar/dandl/ssd_data/SSD/ckpts/",
     )  # change this
     parser.add_argument("--exp-name", type=str, default="temp")
     parser.add_argument(
         "--training-mode", type=str, choices=("SimCLR", "SupCon", "SupCE")
     )
 
-    # model
-    parser.add_argument("--arch", type=str, default="resnet50")
-    parser.add_argument("--num-classes", type=int, default=10)
+    # model (trying with resnet18 because it's small)
+    parser.add_argument("--arch", type=str, default="resnet18")
+    parser.add_argument("--num-classes", type=int, default=2)
 
     # training
-    parser.add_argument("--dataset", type=str, default="cifar10")
-    parser.add_argument("--data-dir", type=str, default="/data/data_vvikash/datasets/")
+    parser.add_argument("--dataset", type=str, default="rb_patches")
+    parser.add_argument("--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/")
     parser.add_argument("--normalize", action="store_true", default=False)
     parser.add_argument("--batch-size", type=int, default=512)
     parser.add_argument("--size", type=int, default=32)

@@ -114,14 +114,14 @@ def main():
     )
     parser.add_argument("--results-dir", type=str, default="./eval_results")
 
-    parser.add_argument("--arch", type=str, default="resnet50")
-    parser.add_argument("--classes", type=int, default=10)
+    parser.add_argument("--arch", type=str, default="resnet18")
+    parser.add_argument("--classes", type=int, default=2)
     parser.add_argument("--clusters", type=int, default=1)
     parser.add_argument("--k", type=int, default=1)
     parser.add_argument("--copies", type=int, default=10)
 
-    parser.add_argument("--dataset", type=str, default="cifar10")
-    parser.add_argument("--data-dir", type=str, default="./datasets")
+    parser.add_argument("--dataset", type=str, default="rb_patches")
+    parser.add_argument("--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/")
     parser.add_argument(
         "--data-mode", type=str, choices=("org", "base", "ssl"), default="base"
     )
@@ -181,9 +181,13 @@ def main():
         model.encoder, train_loader
     )  # using feature befor MLP-head
     features_test, _ = get_features(model.encoder, test_loader)
+    features_train_np = np.asarray(features_train)
+    features_test_np = np.asarray(features_test)
+    np.savez_compressed('embeds/features_train.npz', features_train_np)
+    np.savez_compressed('embeds/features_test.npz', features_test_np)
     print("In-distribution features shape: ", features_train.shape, features_test.shape)
 
-    ds = ["cifar10", "cifar100", "svhn", "texture", "blobs"]
+    ds = ["rb_patches", "only_rb_patches"]
     ds.remove(args.dataset)
 
     for d in ds:
@@ -207,7 +211,11 @@ def main():
         )
 
         features_ood_k, _ = get_features(model.encoder, ood_loader_k)
+        features_ood_k_np = np.asarray(features_ood_k)
+        np.savez_compressed('embeds/features_ood_k.npz', features_ood_k_np)
         features_ood_not_k, _ = get_features(model.encoder, ood_loader_not_k)
+        features_ood_not_k_np = np.asarray(features_ood_not_k)
+        np.savez_compressed('embeds/features_ood_not_k.npz', features_ood_not_k_np)
 
         fpr95, auroc, aupr = get_eval_results(
             np.copy(features_train),

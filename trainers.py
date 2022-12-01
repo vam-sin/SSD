@@ -103,8 +103,11 @@ def ssl(
 
     for i, data in enumerate(dataloader):
         images, target = data[0], data[1].to(device)
+        # print(images.shape)
+        # print(images[0].shape, images[1].shape)
         images = torch.cat([images[0], images[1]], dim=0).to(device)
         bsz = target.shape[0]
+        # print(images.shape, bsz)
 
         # basic properties of training
         if i == 0:

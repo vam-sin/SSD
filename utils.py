@@ -256,8 +256,8 @@ def readloader(dataloader):
 
 def unnormalize(x, norm_layer):
     m, s = (
-        torch.tensor(norm_layer.mean).view(1, 3, 1, 1),
-        torch.tensor(norm_layer.std).view(1, 3, 1, 1),
+        torch.tensor(norm_layer.mean).view(1, 1, 1, 1),
+        torch.tensor(norm_layer.std).view(1, 1, 1, 1),
     )
     return x * s + m
 

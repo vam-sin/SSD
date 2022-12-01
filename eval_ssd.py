@@ -110,12 +110,12 @@ def main():
     parser.add_argument("--results-dir", type=str, default="./eval_results")
 
     parser.add_argument("--arch", type=str, default="resnet50")
-    parser.add_argument("--classes", type=int, default=10)
+    parser.add_argument("--classes", type=int, default=2)
     parser.add_argument("--clusters", type=int, default=1)
 
-    parser.add_argument("--dataset", type=str, default="cifar10")
+    parser.add_argument("--dataset", type=str, default="rb_patches")
     parser.add_argument(
-        "--data-dir", type=str, default="/data/data_vvikash/fall20/SSD/datasets/"
+        "--data-dir", type=str, default="/nfs_home/nallapar/dandl/ssd_data/"
     )
     parser.add_argument(
         "--data-mode", type=str, choices=("org", "base", "ssl"), default="base"
@@ -179,7 +179,7 @@ def main():
     features_test, _ = get_features(model.encoder, test_loader)
     print("In-distribution features shape: ", features_train.shape, features_test.shape)
 
-    ds = ["cifar10", "cifar100", "svhn", "texture", "blobs"]
+    ds = ["only_rb_patches", "rb_patches"]
     ds.remove(args.dataset)
 
     for d in ds:
